@@ -25,5 +25,9 @@ jobs:
         # Switch back to installing from crates.io when it's released.
         #run: cargo install cargo-fuzz
         run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
-      - name: Fuzz
-        run: cargo fuzz run packet_parser -- -max_len=1536 -max_total_time=30
+#       - name: Fuzz
+#         run: cargo fuzz run packet_parser -- -max_len=1536 -max_total_time=30
+      - name: Build Fuzzer
+        run: cargo fuzz build
+      - name: List
+        run: find .
