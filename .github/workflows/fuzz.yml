@@ -40,3 +40,16 @@ jobs:
           --mount type=bind,source=${{ runner.workspace }}/fuzz/target/x86_64-unknown-linux-gnu/release/packet_parser,target=/packet_parser 
           -t forallsecure/mcode-cli:1.15 
           /bin/sh -c 'mayhem package /packet_parser -o /package/; run=`mayhem run /package --baseimage ubuntu:20.04 --corpus file:///corpus --dynamic --duration 30`; mayhem wait $run; [[ `mayhem show $run | grep Defects | awk "{print \$NF}"` == 0 ]]'
+
+#       # Run Mayhem for API
+#       - name: Run Mayhem for Code to check for exploits
+#         uses: ForAllSecure/mcode-action@v1
+#         continue-on-error: true
+#         with:
+#           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
+#           mayhem-url: ${{ secrets.MAYHEM_URL }}
+#           target: packet_parser
+#           duration: 30
+#           image: ubuntu:20.04
+#           sarif-report: mcode.sarif
+#           html-report: mcode.html
