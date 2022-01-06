@@ -29,5 +29,14 @@ jobs:
 #         run: cargo fuzz run packet_parser -- -max_len=1536 -max_total_time=30
       - name: Build Fuzzer
         run: cargo fuzz build
-      - name: List
-        run: find .
+      - name: Run Mayhem
+        run: >-
+          docker run 
+          -e MAYHEM_URL=${{ secrets.MAYHEM_URL }}
+          -e MAYHEM_TOKEN=${{ secrets.MAYHEM_TOKEN }}
+          -v /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu 
+          -v /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu 
+          -v ${{ runner.workspace }}/fuzz/corpus/packet_parser:/corpus
+          -v ${{ runner.workspace }}/fuzz/target/x86_64-unknown-linux-gnu/release/packet_parser:/packet_parser 
+          -it forallsecure/mcode-cli:1.15 
+          /bin/sh -c 'mayhem package /packet_parser -o /package/; mayhem run /package --baseimage ubuntu:20.04 --corpus file:///corpus --dynamic --duration 30'
