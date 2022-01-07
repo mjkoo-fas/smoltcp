@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: ethan42/mcode-action@75bc7171f6cfb8591474aac32af6e10f03c1e2f5
+      - uses: ethan42/mcode-action@7138a9005c1bebedd08defbc57091922ee6f15f2
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
