@@ -15,47 +15,17 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: ethan42/mcode-action@7138a9005c1bebedd08defbc57091922ee6f15f2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Install cargo-fuzz
+        # Fix for cargo-fuzz on latest nightly: https://github.com/rust-fuzz/cargo-fuzz/issues/276
+        # Switch back to installing from crates.io when it's released.
+        run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
+
+      - uses: ethan42/mcode-action@c451f7536d77423e0a852a9c5ce5fe9d7e7f1ecb
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
-          
-#       - uses: actions-rs/toolchain@v1
-#         with:
-#           profile: minimal
-#           toolchain: nightly
-#           override: true
-#       - name: Install cargo-fuzz
-#         # Fix for cargo-fuzz on latest nightly: https://github.com/rust-fuzz/cargo-fuzz/issues/276
-#         # Switch back to installing from crates.io when it's released.
-#         #run: cargo install cargo-fuzz
-#         run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
-# #       - name: Fuzz
-# #         run: cargo fuzz run packet_parser -- -max_len=1536 -max_total_time=30
-#       - name: Build Fuzzer
-#         run: cargo fuzz build packet_parser
-#       - name: Run Mayhem
-#         run: >-
-#           docker run 
-#           -e MAYHEM_URL=${{ secrets.MAYHEM_URL }}
-#           -e MAYHEM_TOKEN=${{ secrets.MAYHEM_TOKEN }}
-#           -e GITHUB_ACTOR=$${ github.actor }}
-#           -v /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu 
-#           -v /usr/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu 
-#           -v ${{ runner.workspace }}/smoltcp/fuzz/corpus/packet_parser:/corpus
-#           -v ${{ runner.workspace }}/smoltcp/fuzz/target/x86_64-unknown-linux-gnu/release/packet_parser:/packet_parser 
-#           -t forallsecure/mcode-cli:1.15 
-#           /bin/sh -c 'mayhem package /packet_parser -o /package/; echo ${GITHUB_ACTOR}; echo share the love; rm -rf /package/root/lib; run=`mayhem run --build-id=action_url_here /package --baseimage ubuntu:20.04 --corpus file:///corpus --dynamic --duration 30`; mayhem wait $run; [[ "`mayhem show $run | grep Defects | cut -f 2 -d :`" == " 0" ]]'
-
-#       # Run Mayhem for API
-#       - name: Run Mayhem for Code to check for exploits
-#         uses: ForAllSecure/mcode-action@v1
-#         continue-on-error: true
-#         with:
-#           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
-#           mayhem-url: ${{ secrets.MAYHEM_URL }}
-#           target: packet_parser
-#           duration: 30
-#           image: ubuntu:20.04
-#           sarif-report: mcode.sarif
-#           html-report: mcode.html
