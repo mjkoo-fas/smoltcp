@@ -25,7 +25,7 @@ jobs:
         # Switch back to installing from crates.io when it's released.
         run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
 
-      - uses: ethan42/mcode-action@8e7d14fc678a3122750e3556863a70ed89ac5b1d
+      - uses: ethan42/mcode-action@69029a96915b90bb266f97965a32e23777153aed
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
