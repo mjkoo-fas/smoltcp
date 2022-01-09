@@ -29,4 +29,5 @@ jobs:
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           image: ubuntu:20.04
