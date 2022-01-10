@@ -25,9 +25,15 @@ jobs:
         # Switch back to installing from crates.io when it's released.
         run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
 
-      - uses: ethan42/mcode-action@36dfb8e498a0a403d34df1f9e914256d19e9764f
+      - uses: ethan42/mcode-action@5d13f105c45238a00840f6c53b8b122c2573516d
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           image: ubuntu:20.04
+          
+#       # Upload SARIF file (only available on public repos or github enterprise)
+#       - name: Upload SARIF file
+#         uses: github/codeql-action/upload-sarif@v1
+#         with:
+#           sarif_file: '*.sarif'
