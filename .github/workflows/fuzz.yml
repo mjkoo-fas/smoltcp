@@ -31,7 +31,11 @@ jobs:
           mayhem-url: ${{ secrets.MAYHEM_URL }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           image: ubuntu:20.04
-          
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mayhem-results
+          path: *.sarif
 #       # Upload SARIF file (only available on public repos or github enterprise)
 #       - name: Upload SARIF file
 #         uses: github/codeql-action/upload-sarif@v1
