@@ -15,29 +15,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: mjkoo/giftwrap-action
         with:
-          profile: minimal
-          toolchain: nightly
-          override: true
-      - name: Install cargo-fuzz
-        # Fix for cargo-fuzz on latest nightly: https://github.com/rust-fuzz/cargo-fuzz/issues/276
-        # Switch back to installing from crates.io when it's released.
-        run: cargo install --git https://github.com/rust-fuzz/cargo-fuzz --rev b4df3e58f767b5cad8d1aa6753961003f56f3609
-
-      - uses: ethan42/mcode-action@608c50bcdedafa54560cbeb597280c3c1afc05f0
-        with:
-          mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
-          mayhem-url: ${{ secrets.MAYHEM_URL }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          image: ubuntu:20.04
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: mayhem-results
-          path: ./*.sarif
-#       # Upload SARIF file (only available on public repos or github enterprise)
-#       - name: Upload SARIF file
-#         uses: github/codeql-action/upload-sarif@v1
-#         with:
-#           sarif_file: '*.sarif'
+          cargo-fuzz-target: packet_parser
+        env:
+          MAYHEM_TOKEN: ${{ secrets.MAYHEM_TOKEN }}
+          MAYHEM_URL: ${{ secrets.MAYHEM_URL }}
