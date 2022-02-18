@@ -13,9 +13,16 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      - uses: mjkoo/giftwrap-action@master
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz
+      - uses: mjkoo/mcode-action@main
         with:
           cargo-fuzz-target: packet_parser
-        env:
-          MAYHEM_TOKEN: ${{ secrets.MAYHEM_TOKEN }}
-          MAYHEM_URL: ${{ secrets.MAYHEM_URL }}
+          mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
+          mayhem-url: ${{ secrets.MAYHEM_URL }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
