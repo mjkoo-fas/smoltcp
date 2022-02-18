@@ -18,11 +18,10 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
-      - name: Install cargo-fuzz
-        run: cargo install cargo-fuzz
+          #      - name: Install cargo-fuzz
+          #        run: cargo install cargo-fuzz
       - uses: mjkoo/mcode-action@main
         with:
           cargo-fuzz-target: packet_parser
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
           mayhem-url: ${{ secrets.MAYHEM_URL }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
